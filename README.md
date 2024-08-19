@@ -3,6 +3,6 @@
 Here is the collection of my series of posts on LinkedIn: Terraform Tuesday.
 Have fun with it!
 
-Your Prussian Bavarian Mathtias - Cloud Architect
+Your Prussian Bavarian Matthias, Cloud Architect
 
 My LinkedIn Profile: www.linkedin.com/in/matthias-braun-cloud-architect
