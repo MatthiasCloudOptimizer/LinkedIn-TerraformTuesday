@@ -5,4 +5,4 @@ Have fun with it!
 
 Your Mathtias, Prussian Bavarian and Cloud Architect
 
-My LinkedIn Profile: www.linkedin.com/in/matthias-braun-cloud-solutions
+My LinkedIn Profile: www.linkedin.com/in/matthias-braun-cloud-architect
