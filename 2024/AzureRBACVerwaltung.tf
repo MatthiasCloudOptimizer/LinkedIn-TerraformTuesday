@@ -12,13 +12,13 @@ provider "azurerm" {
 }
 
 data "azuread_group" "developer_group" {
-  display_name = "AZ-RG.DeveloperTeam" # The Entra ID group must exist
+    display_name = "AZ-RG.DeveloperTeam" # The Entra ID group must exist
 }
 
 # Azure resource group
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-DeveloperTest-westeu"
-  location = "West Europe"
+    name     = "rg-DeveloperTest-westeu"
+    location = "West Europe"
 }
 
 # Resource group role assigment
