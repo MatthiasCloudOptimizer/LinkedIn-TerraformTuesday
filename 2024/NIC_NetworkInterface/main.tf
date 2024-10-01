@@ -2,7 +2,7 @@ terraform {
     required_providers {
         azurerm = {
             source  = "hashicorp/azurerm"
-            version = ">=3.89.0"
+            version = "4.3.0"
         }
     }
 }
@@ -48,6 +48,7 @@ resource "azurerm_subnet" "snet" {
     virtual_network_name = azurerm_virtual_network.vnet.name
     address_prefixes     = ["10.0.1.0/24"]
 }
+
 # Azure Network Interface (NIC)
 resource "azurerm_network_interface" "nic" {
     name                = "nic-AdmJumpServer-dev-westeu"
