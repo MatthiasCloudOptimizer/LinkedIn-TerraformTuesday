@@ -8,7 +8,7 @@ terraform {
 }
 provider "azurerm" {
     features {}
-    subscription_id = "7fae56f8-ef32-4c6a-a8c1-53be8241e468"
+    subscription_id = "your_subscription_id"
 }
 
 # Azure resource group
