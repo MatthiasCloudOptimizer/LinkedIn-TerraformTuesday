@@ -10,16 +10,16 @@ provider "azurerm" {
 }
 
 data "azuread_group" "developer_group" {
-    display_name = "AZ-RG.DeveloperTeam"
+    display_name = "AZ-RG.DeveloperTeam" # Name of the Azure AD group
 }
 
 resource "azurerm_resource_group" "rg" {
-    name     = "rg-DeveloperTest-westeu"
+    name     = "rg-DeveloperTest-westeu" 
     location = "West Europe"
 }
 
 resource "azurerm_role_assignment" "assignments" {
     scope                = azurerm_resource_group.rg.id
     role_definition_name = "Contributor"
-    principal_id         = data.azuread_group.developer_group.object_id
+    principal_id         = data.azuread_group.developer_group.object_id # Assigning the role to the Azure AD group
 }
