@@ -57,7 +57,7 @@ resource "azurerm_network_security_group" "nsg" {
                 protocol                   = "Udp"
                 source_port_range          = "*"
                 destination_port_range     = "19132"
-                source_address_prefix      = "111.111.111.111"
+                source_address_prefix      = "93.227.105.69"
                 destination_address_prefix = "*"
         }
 
@@ -110,12 +110,19 @@ resource "azurerm_linux_virtual_machine" "vm" {
                 version   = "latest"
         }
 
+        disable_password_authentication = true
+
+        admin_ssh_key {
+                username   = "azureuser"
+                public_key = file(var.ssh_public_key_path)  # Pfad zu deinem öffentlichen SSH-Schlüssel
+        }
+
         tags               = local.common_tags
 }
 
 # Managed disk
 resource "azurerm_managed_disk" "data_disk" {
-        name                 = "-data-disk-${var.prefix}"
+        name                 = "data-disk-${var.prefix}"
         location            = azurerm_resource_group.rg.location
         resource_group_name = azurerm_resource_group.rg.name
         storage_account_type = "Premium_LRS"

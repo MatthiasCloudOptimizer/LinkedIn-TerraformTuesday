@@ -1,7 +1,7 @@
 variable "prefix" {
     description = "Prefix for all resource names"
     type        = string
-    default     = "minecraft"
+    default     = "MinecraftBedrockServer"
 }
 
 variable "location" {
@@ -13,7 +13,7 @@ variable "location" {
 variable "vm_name" {
     description = "Name of the virtual machine"
     type        = string
-    default     = "minecraft-server"
+    default     = "minecraftBedrock-server"
 }
 
 variable "ssh_public_key_path" {
