@@ -16,7 +16,7 @@ resource "azurerm_resource_group" "rg" {
 
 # Virtual network
 resource "azurerm_virtual_network" "vnet" {
-        name                = "${var.prefix}-vnet"
+        name                = "vnet-${var.prefix}"
         address_space       = ["10.0.0.0/27"]
         location           = azurerm_resource_group.rg.location
         resource_group_name = azurerm_resource_group.rg.name
@@ -25,7 +25,7 @@ resource "azurerm_virtual_network" "vnet" {
 
 # Subnet
 resource "azurerm_subnet" "subnet" {
-        name                 = "${var.prefix}-subnet"
+        name                 = "subnet-${var.prefix}"
         resource_group_name  = azurerm_resource_group.rg.name
         virtual_network_name = azurerm_virtual_network.vnet.name
         address_prefixes     = ["10.0.0.0/28"]
@@ -33,21 +33,45 @@ resource "azurerm_subnet" "subnet" {
 
 # Public IP
 resource "azurerm_public_ip" "pip" {
-        name                = "${var.prefix}-pip"
+        name                = "pip-${var.prefix}"
         location            = azurerm_resource_group.rg.location
         resource_group_name = azurerm_resource_group.rg.name
         allocation_method   = "Static"
+        sku                 = "Standard"
         tags               = local.common_tags
 }
 
 # NSG
 resource "azurerm_network_security_group" "nsg" {
-        name                = "${var.prefix}-nsg"
+        name                = "nsg-${var.prefix}"
         location            = azurerm_resource_group.rg.location
         resource_group_name = azurerm_resource_group.rg.name
         tags               = local.common_tags
 
-        # ... existing security rules ...
+        security_rule {
+                name                       = "AllowAnyCustom19132_Inbound"
+                description                = "Minecraft Bedrock Port"
+                priority                   = 100
+                direction                  = "Inbound"
+                access                     = "Allow"
+                protocol                   = "Udp"
+                source_port_range          = "*"
+                destination_port_range     = "19132"
+                source_address_prefix      = "111.111.111.111"
+                destination_address_prefix = "*"
+        }
+
+        security_rule {
+                name                       = "SSH"
+                priority                   = 300
+                direction                  = "Inbound"
+                access                     = "Allow"
+                protocol                   = "Tcp"
+                source_port_range          = "*"
+                destination_port_range     = "22"
+                source_address_prefix      = "*"
+                destination_address_prefix = "*"
+        }
 }
 
 # NIC
@@ -91,7 +115,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
 # Managed disk
 resource "azurerm_managed_disk" "data_disk" {
-        name                 = "${var.prefix}-data-disk"
+        name                 = "-data-disk-${var.prefix}"
         location            = azurerm_resource_group.rg.location
         resource_group_name = azurerm_resource_group.rg.name
         storage_account_type = "Premium_LRS"
