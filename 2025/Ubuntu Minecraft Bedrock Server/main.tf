@@ -1,37 +1,37 @@
 # Definiere gemeinsame Tags als lokale Variable
 locals {
-    common_tags = {
-        Owner       = "Matthias"
-        Environment = "Prod"
-        Usage       = "Minecraft Server"
-    }
+        common_tags = {
+                Owner       = "Matthias"
+                Environment = "Prod"
+                Usage       = "Minecraft Server"
+        }
 }
 
-# Resource group mit Tags
+# Resource group
 resource "azurerm_resource_group" "rg" {
         name     = "rg-${var.prefix}"
         location = var.location
         tags     = local.common_tags
 }
 
-# Virtual network mit Tags
+# Virtual network
 resource "azurerm_virtual_network" "vnet" {
         name                = "${var.prefix}-vnet"
-        address_space       = ["10.0.0.0/16"]
+        address_space       = ["10.0.0.0/27"]
         location           = azurerm_resource_group.rg.location
         resource_group_name = azurerm_resource_group.rg.name
         tags               = local.common_tags
 }
 
-# Subnet (Note: Subnets don't support tags in Azure)
+# Subnet
 resource "azurerm_subnet" "subnet" {
         name                 = "${var.prefix}-subnet"
         resource_group_name  = azurerm_resource_group.rg.name
         virtual_network_name = azurerm_virtual_network.vnet.name
-        address_prefixes     = ["10.0.1.0/24"]
+        address_prefixes     = ["10.0.0.0/28"]
 }
 
-# Public IP mit Tags
+# Public IP
 resource "azurerm_public_ip" "pip" {
         name                = "${var.prefix}-pip"
         location            = azurerm_resource_group.rg.location
@@ -40,7 +40,7 @@ resource "azurerm_public_ip" "pip" {
         tags               = local.common_tags
 }
 
-# NSG mit Tags
+# NSG
 resource "azurerm_network_security_group" "nsg" {
         name                = "${var.prefix}-nsg"
         location            = azurerm_resource_group.rg.location
@@ -50,7 +50,7 @@ resource "azurerm_network_security_group" "nsg" {
         # ... existing security rules ...
 }
 
-# NIC mit Tags
+# NIC
 resource "azurerm_network_interface" "nic" {
         name                = "nic-${var.prefix}"
         location            = azurerm_resource_group.rg.location
@@ -65,7 +65,7 @@ resource "azurerm_network_interface" "nic" {
         }
 }
 
-# VM mit Tags
+# VM
 resource "azurerm_linux_virtual_machine" "vm" {
         name                = var.vm_name
         resource_group_name = azurerm_resource_group.rg.name
@@ -89,7 +89,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
         tags               = local.common_tags
 }
 
-# Managed disk mit Tags
+# Managed disk
 resource "azurerm_managed_disk" "data_disk" {
         name                 = "${var.prefix}-data-disk"
         location            = azurerm_resource_group.rg.location
